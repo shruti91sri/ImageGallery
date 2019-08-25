@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en-us" ng-app="imageScroller">
+<title>Image Scroller</title>
+<meta charset="UTF-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <script  type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>    
+    <script  type="text/javascript" src="app.js"></script>
+    <script  type="text/javascript" src="Controllers/ImageScrollerController.js"></script>
+    <script  type="text/javascript" src="Services/ImageScrollerService.js"></script>
+    <script  type="text/javascript" src="Directives/scrolling.js"></script>
+    <link rel="stylesheet" href="Styles/style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script> 
+  </head>
+  <body class="scroller" ng-controller="ImageScrollerController" ng-init="renderImages()">
+    <div class="container image-gallery-container">
+      <div class="row heading">
+        <div class="col" >
+          <h2>Welcome to Image Gallery</h2>                  
+        </div>        
+      </div>
+      <div class="loadingError" ng-if="loading">Loading....</div>
+      <div class="loadingError" ng-if="isError">{{errorMessage}}</div>
+      <div class="row" id="fixed" scrolling="loadMore()" ng-if="!loading && !isError">  
+        <div class="col gallery" ng-repeat="image in imageList track by $index| limitTo: limit">  
+          <!--As the api response didn't had description so i have used title as description -->        
+          <div uib-tooltip="{{image.title}}" tooltip-placement="top-left" tooltip-trigger="mouseenter" tooltip-class="customClass">
+            <img 
+            ng-src="https://farm{{image.farm}}.staticflickr.com/{{image.server}}/{{image.id}}_{{image.secret}}_q.jpg" 
+            alt="{{image.title}}">
+          </div>
+          <div class="title">{{image.title}}</div>
+        </div>
+      </div>                
+    </div>    
+  </body>
+</html>
